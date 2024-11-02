@@ -81,9 +81,15 @@ void AppLinux::main( const RendererRef &defaultRenderer, const char *title, cons
 	if( settings.getShouldQuit() )
 		return;
 
-	AppLinux *app = static_cast<AppLinux *>( new AppT );
+        // @bug 0001
+        static AppLinux *app = nullptr;
+        if (app != nullptr) {
+            delete app;
+            app = nullptr;
+        }
+
+	app = static_cast<AppLinux *>( new AppT );
 	app->executeLaunch();
-	delete app;
 
 	AppBase::cleanupLaunch();
 }
